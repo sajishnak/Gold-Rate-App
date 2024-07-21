@@ -1,6 +1,7 @@
-import { Pressable, Text, View, StyleSheet } from "react-native";
+import { Pressable, Text, View, StyleSheet, Image } from "react-native";
 import { GoldCardProps, SubCardProps } from "../types/componentType/GoldCard";
 import { cardBackground, cardBottom, white } from "../constants/Color";
+import images from "../../assets/images";
 
 export const SubCard = (props: SubCardProps) => {
   const { style, title, subTitle, titleStyle, subTitleStyle } = props;
@@ -13,19 +14,23 @@ export const SubCard = (props: SubCardProps) => {
 };
 
 const GoldCard = (props: GoldCardProps) => {
-  const { title, subtitle, day, rate } = props;
+  const { title, subtitle, day, rate, isSelected, onPress } = props;
   const goldRate = `₹${rate} / mg`;
   return (
-    <Pressable style={styles.root}>
-      <SubCard title={title} subTitle={subtitle} />
-      <SubCard
-        title={day}
-        subTitle={goldRate}
-        style={styles.bottomContainer}
-        titleStyle={[styles.dayText, styles.unitText]}
-        subTitleStyle={styles.unitText}
-      />
-    </Pressable>
+    <View style={{ paddingTop: 10 }}>
+      {isSelected && <Image style={styles.image} source={images.success} />}
+
+      <Pressable style={styles.root} onPress={onPress}>
+        <SubCard title={title} subTitle={subtitle} />
+        <SubCard
+          title={day}
+          subTitle={goldRate}
+          style={styles.bottomContainer}
+          titleStyle={[styles.dayText, styles.unitText]}
+          subTitleStyle={styles.unitText}
+        />
+      </Pressable>
+    </View>
   );
 };
 
@@ -65,5 +70,13 @@ const styles = StyleSheet.create({
   unitText: {
     color: white,
     fontSize: 14,
+  },
+  image: {
+    height: 30,
+    width: 30,
+    position: "absolute",
+    top: 0,
+    right: 20,
+    zIndex: 999,
   },
 });

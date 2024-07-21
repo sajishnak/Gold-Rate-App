@@ -10,8 +10,8 @@ import GoldCard from "./GoldCard";
 import { black, white } from "../constants/Color";
 import images from "../../assets/images";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Carousel from "react-native-reanimated-carousel";
 import { CarouselRenderItemInfo } from "react-native-reanimated-carousel/lib/typescript/types";
+import { useState } from "react";
 
 const DATA = [
   {
@@ -31,6 +31,7 @@ const DATA = [
 const GoldCarousel = (props: GoldCarousel) => {
   const { goldRate, myBalance } = props;
   const insets = useSafeAreaInsets();
+  const [selected, setSelected] = useState(1);
 
   const renderItem = ({ index, item }: CarouselRenderItemInfo<CaroselType>) => {
     return (
@@ -39,6 +40,8 @@ const GoldCarousel = (props: GoldCarousel) => {
         subtitle={item.subTitle}
         day="Today"
         rate={`${goldRate.toFixed(2)}`}
+        isSelected={selected === index}
+        onPress={() => setSelected(index)}
       />
     );
   };

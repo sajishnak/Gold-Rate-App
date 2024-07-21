@@ -13,4 +13,6 @@ export type GoldCardProps = {
   subtitle: string;
   day: string;
   rate: string;
+  isSelected: boolean;
+  onPress: () => void;
 };
