@@ -29,7 +29,7 @@ const DATA = [
 ];
 
 const GoldCarousel = (props: GoldCarousel) => {
-  const { goldRate } = props;
+  const { goldRate, myBalance } = props;
   const insets = useSafeAreaInsets();
   const windowDimensions = useWindowDimensions();
 
@@ -58,7 +58,7 @@ const GoldCarousel = (props: GoldCarousel) => {
       <Text style={styles.balanceTitle}>My Gold Balance</Text>
       <View style={styles.goldContainer}>
         <Image style={styles.coin} source={images.goldCoin} />
-        <Text style={styles.gold}>0.0 mg</Text>
+        <Text style={styles.gold}>{myBalance} mg</Text>
       </View>
     </View>
   );

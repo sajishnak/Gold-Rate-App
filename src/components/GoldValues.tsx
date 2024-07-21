@@ -5,9 +5,10 @@ import Button from "./Button";
 import { useNavigation } from "@react-navigation/native";
 import { GoldValuesProp } from "../types/componentType/GoldValues";
 import { goldRateCalculation } from "../utils/goldRateCalculation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GoldValues = (props: GoldValuesProp) => {
-  const { sellingData, buyingData } = props;
+  const { sellingData, buyingData, myBalance } = props;
   const navigation = useNavigation();
   const [amount, setAmount] = useState<string>("");
   const [gold, setGold] = useState<string>("");
@@ -50,7 +51,13 @@ const GoldValues = (props: GoldValuesProp) => {
   };
 
   const onBuyPress = () => {
+    const goldBalance = `${(parseFloat(myBalance) + parseFloat(gold)).toFixed(
+      2
+    )}`;
+    AsyncStorage.setItem("goldBalance", goldBalance);
     navigation.navigate("TransactionSuccessScreen" as never);
+    setAmount("");
+    setGold("");
   };
 
   return (
