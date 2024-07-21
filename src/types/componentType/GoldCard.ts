@@ -12,5 +12,5 @@ export type GoldCardProps = {
   title: string;
   subtitle: string;
   day: string;
-  rate: number;
+  rate: string;
 };

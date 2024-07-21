@@ -1,18 +1,59 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import GoldCard from "./GoldCard";
 import { black, white } from "../constants/Color";
 import images from "../../assets/images";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Carousel from "react-native-reanimated-carousel";
+import { CarouselRenderItemInfo } from "react-native-reanimated-carousel/lib/typescript/types";
 
-const GoldCarousel = () => {
+const DATA = [
+  {
+    title: "Muthoot Gold",
+    subTitle: "99.99% 24K Pure Gold",
+  },
+  {
+    title: "Malabar Gold",
+    subTitle: "99.99% 24K Pure Gold",
+  },
+  {
+    title: "Joy Alukkas Gold",
+    subTitle: "99.99% 24K Pure Gold",
+  },
+];
+
+const GoldCarousel = (props: GoldCarousel) => {
+  const { goldRate } = props;
   const insets = useSafeAreaInsets();
+  const windowDimensions = useWindowDimensions();
+
+  const renderItem = ({ index, item }: CarouselRenderItemInfo<CaroselType>) => {
+    return (
+      <GoldCard
+        title={item.title}
+        subtitle={item.subTitle}
+        day="Today"
+        rate={`${goldRate.toFixed(2)}`}
+      />
+    );
+  };
+
   return (
     <View style={[styles.topContainer, { paddingTop: insets.top }]}>
-      <GoldCard
-        title="Malabar Gold"
-        subtitle="99.99% 24K Pure Gold"
-        day="Today"
-        rate={3.35}
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        horizontal
+        ItemSeparatorComponent={<View style={{ width: 10 }} />}
+        snapToInterval={100}
+        snapToAlignment="center"
+        showsHorizontalScrollIndicator={false}
       />
       <Text style={styles.balanceTitle}>My Gold Balance</Text>
       <View style={styles.goldContainer}>
@@ -30,7 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: black,
     borderBottomEndRadius: 80,
     borderBottomLeftRadius: 80,
-    alignItems: "center",
     paddingBottom: 48,
   },
   balanceTitle: {
@@ -38,6 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 14,
     marginTop: 40,
+    alignSelf: "center",
   },
   gold: {
     color: white,

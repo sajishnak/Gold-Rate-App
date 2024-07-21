@@ -2,7 +2,7 @@ import { Pressable, Text, View, StyleSheet } from "react-native";
 import { GoldCardProps, SubCardProps } from "../types/componentType/GoldCard";
 import { cardBackground, cardBottom, white } from "../constants/Color";
 
-const SubCard = (props: SubCardProps) => {
+export const SubCard = (props: SubCardProps) => {
   const { style, title, subTitle, titleStyle, subTitleStyle } = props;
   return (
     <View style={[styles.topContainer, style]}>
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 40,
     overflow: "hidden",
+    alignSelf: "center",
   },
   topContainer: {
     flex: 1,
