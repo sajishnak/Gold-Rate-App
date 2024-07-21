@@ -4,3 +4,4 @@ export const secondaryBlack = "#393E46";
 export const cardBackground = "#DEAC80";
 export const cardBottom = "#B99470";
 export const lightBrown = "#948979";
+export const warningRed = "#C80036";

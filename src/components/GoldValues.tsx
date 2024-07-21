@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TextInput } from "react-native";
-import { lightBrown, white } from "../constants/Color";
+import { lightBrown, warningRed, white } from "../constants/Color";
 import Button from "./Button";
 import { useNavigation } from "@react-navigation/native";
 import { GoldValuesProp } from "../types/componentType/GoldValues";
@@ -8,10 +8,26 @@ import { goldRateCalculation } from "../utils/goldRateCalculation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GoldValues = (props: GoldValuesProp) => {
-  const { sellingData, buyingData, myBalance } = props;
+  const { sellingData, buyingData, myBalance, setIsSelling } = props;
   const navigation = useNavigation();
   const [amount, setAmount] = useState<string>("");
   const [gold, setGold] = useState<string>("");
+  const [isValidErr, setIsValidErr] = useState(false);
+  const [errMessage, setErrMsg] = useState("");
+  const [isSellingSuccess, setIsSellingSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isValidErr) {
+      setTimeout(() => {
+        setIsValidErr(false);
+      }, 3000);
+    }
+    if (isSellingSuccess) {
+      setTimeout(() => {
+        setIsSellingSuccess(false);
+      }, 3000);
+    }
+  }, [isValidErr, isSellingSuccess]);
 
   const goldRate: number =
     buyingData &&
@@ -42,7 +58,6 @@ const GoldValues = (props: GoldValuesProp) => {
     if (type === "gold") {
       setGold(val);
       getGoldRate(parseFloat(val));
-      setAmount("");
     }
     if (type === "amount") {
       setAmount(val);
@@ -51,11 +66,46 @@ const GoldValues = (props: GoldValuesProp) => {
   };
 
   const onBuyPress = () => {
-    const goldBalance = `${(parseFloat(myBalance) + parseFloat(gold)).toFixed(
-      2
-    )}`;
-    AsyncStorage.setItem("goldBalance", goldBalance);
-    navigation.navigate("TransactionSuccessScreen" as never);
+    if (parseFloat(amount) <= 0.0 || amount === "") {
+      setIsValidErr(true);
+      setErrMsg("Please enter a valid amount");
+    } else {
+      const goldBalance = `${(parseFloat(myBalance) + parseFloat(gold)).toFixed(
+        2
+      )}`;
+      AsyncStorage.setItem("goldBalance", goldBalance);
+      navigation.navigate("TransactionSuccessScreen", {
+        value: amount,
+        weight: gold,
+        isBuy: true,
+      });
+      setAmount("");
+      setGold("");
+    }
+  };
+
+  const onSellPress = () => {
+    console.log(gold, myBalance);
+    if (parseFloat(gold) <= parseFloat(myBalance)) {
+      const goldBalance = `${(parseFloat(myBalance) - parseFloat(gold)).toFixed(
+        2
+      )}`;
+      AsyncStorage.setItem("goldBalance", goldBalance);
+      setIsSelling(true);
+      navigation.navigate("TransactionSuccessScreen", {
+        value: amount,
+        weight: gold,
+        isBuy: true,
+      });
+      // setIsSellingSuccess(true);
+      // setErrMsg("Transaction successfully completed");
+    } else if (parseFloat(gold) <= 0 || gold === "") {
+      setErrMsg("Please enter a valid amount");
+      setIsValidErr(true);
+    } else {
+      setErrMsg("In sufficient gold storage in your account");
+      setIsValidErr(true);
+    }
     setAmount("");
     setGold("");
   };
@@ -92,9 +142,15 @@ const GoldValues = (props: GoldValuesProp) => {
 
         <View style={styles.buttonContainer}>
           <Button text="Buy" onPress={onBuyPress} />
-          <Button text="Sell" onPress={() => {}} />
+          <Button text="Sell" onPress={onSellPress} />
         </View>
       </View>
+      {isValidErr && <Text style={styles.errorMsg}>{errMessage}</Text>}
+      {isSellingSuccess && (
+        <Text style={[styles.errorMsg, { backgroundColor: "green" }]}>
+          {errMessage}
+        </Text>
+      )}
       <Text>
         <Text style={{ color: white }}>Buying price ₹${goldRate} / mg</Text>
         <Text style={{ color: lightBrown }}> (including Tax/GST)</Text>
@@ -134,5 +190,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  errorMsg: {
+    backgroundColor: warningRed,
+    padding: 8,
+    color: white,
+    marginBottom: 8,
   },
 });

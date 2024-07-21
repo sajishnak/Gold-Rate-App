@@ -31,7 +31,6 @@ const DATA = [
 const GoldCarousel = (props: GoldCarousel) => {
   const { goldRate, myBalance } = props;
   const insets = useSafeAreaInsets();
-  const windowDimensions = useWindowDimensions();
 
   const renderItem = ({ index, item }: CarouselRenderItemInfo<CaroselType>) => {
     return (

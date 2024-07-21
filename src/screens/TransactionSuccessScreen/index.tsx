@@ -1,13 +1,18 @@
 import { StyleSheet, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/core";
 import { secondaryBlack } from "../../constants/Color";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TransactionSuccess from "../../types/componentType/TransactionSuccess";
 import Toolbar from "../../components/Toolbar";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../../components/Button";
+import TransactionSuccess from "../../components/TransactionSuccess";
+import { TranactionScreenProps } from "../../navigation";
 
 const TransactionSuccessScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute<TranactionScreenProps["route"]>();
+  const { params } = route;
+  const { isBuy, value, weight } = params;
 
   const onBack = () => {
     navigation.goBack();
@@ -20,7 +25,7 @@ const TransactionSuccessScreen = () => {
   return (
     <SafeAreaView style={styles.root} edges={["bottom", "left", "right"]}>
       <Toolbar title="My Gold" backIcon onBack={onBack} />
-      <TransactionSuccess />
+      <TransactionSuccess isBuy={isBuy} value={value} weight={weight} />
       <View style={styles.buttonContainer}>
         <Button text="Home" onPress={goToHome} />
       </View>

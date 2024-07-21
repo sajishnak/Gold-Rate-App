@@ -1,17 +1,22 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import { black, lightBrown, white } from "../../constants/Color";
-import images from "../../../assets/images";
-import TransactionComponent from "../../components/TransactionComponent";
+import { black, lightBrown, white } from "../constants/Color";
+import images from "../../assets/images";
+import TransactionComponent from "./TransactionComponent";
+import { TransactionSuccessProps } from "../types/componentType/TransactionSuccess";
 
-const TransactionSuccess = () => {
+const TransactionSuccess = (props: TransactionSuccessProps) => {
+  const { isBuy, value, weight } = props;
+
   return (
     <View style={styles.topContainer}>
       <Image style={{ height: 100, width: 100 }} source={images.success} />
       <Text style={styles.title}>Congratulations</Text>
       <Text style={styles.subTitle}>
-        Transaction successfull for gold purchase
+        {isBuy
+          ? "Transaction successfull for gold purchase"
+          : "Transaction successfull for gold Sales"}
       </Text>
-      <TransactionComponent />
+      <TransactionComponent value={value} weight={weight} />
       <Text style={styles.title}>View Transactions</Text>
     </View>
   );

@@ -4,4 +4,5 @@ export type GoldValuesProp = {
   sellingData?: SellPrice;
   buyingData?: BuyPrice;
   myBalance: string;
+  setIsSelling: React.Dispatch<React.SetStateAction<boolean>>;
 };

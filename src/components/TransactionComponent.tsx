@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import {
-  cardBottom,
-  lightBrown,
-  secondaryBlack,
-  white,
-} from "../constants/Color";
+import { lightBrown, secondaryBlack, white } from "../constants/Color";
 import { SubCard } from "./GoldCard";
 
-const TransactionComponent = () => {
+type Props = {
+  weight: string;
+  value: string;
+};
+
+const TransactionComponent = (props: Props) => {
+  const { weight, value } = props;
   return (
     <View style={styles.container}>
       <Text style={{ color: secondaryBlack, fontSize: 12 }}>
@@ -26,18 +27,18 @@ const TransactionComponent = () => {
         }}
       >
         <SubCard
-          title="kkk"
-          subTitle="kk"
+          title="Order ID"
+          subTitle="403-0631"
           style={{ backgroundColor: "transparent" }}
         />
         <SubCard
-          title="kkk"
-          subTitle="kk"
+          title="Value"
+          subTitle={`₹ ${value}`}
           style={{ backgroundColor: "transparent" }}
         />
         <SubCard
-          title="kkk"
-          subTitle="kk"
+          title="Weights"
+          subTitle={`${weight} mg`}
           style={{ backgroundColor: "transparent" }}
         />
       </View>

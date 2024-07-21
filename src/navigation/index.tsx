@@ -1,9 +1,28 @@
 import * as React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  NativeStackScreenProps,
+  createNativeStackNavigator,
+} from "@react-navigation/native-stack";
 import Homescreen from "../screens/home";
 import TransactionSuccessScreen from "../screens/TransactionSuccessScreen";
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Home: undefined;
+  TransactionSuccessScreen: { value: string; weight: string; isBuy: boolean };
+};
+
+export type TranactionScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  "TransactionSuccessScreen"
+>;
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootStack() {
   return (
