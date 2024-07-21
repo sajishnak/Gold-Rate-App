@@ -124,6 +124,7 @@ const GoldValues = (props: GoldValuesProp) => {
               onChangeText(item, "amount");
             }}
             placeholder="0.00"
+            keyboardAppearance="dark"
             placeholderTextColor={white}
           />
           <Text style={[styles.input, styles.devider]}>/</Text>
@@ -134,6 +135,7 @@ const GoldValues = (props: GoldValuesProp) => {
             onChangeText={(item) => {
               onChangeText(item, "gold");
             }}
+            keyboardAppearance="dark"
             placeholder="0.0"
             placeholderTextColor={white}
           />
