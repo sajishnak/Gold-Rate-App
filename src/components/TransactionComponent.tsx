@@ -3,8 +3,8 @@ import { lightBrown, secondaryBlack, white } from "../constants/Color";
 import { SubCard } from "./GoldCard";
 
 type Props = {
-  weight: string;
-  value: string;
+  weight?: string;
+  value?: string;
 };
 
 const TransactionComponent = (props: Props) => {

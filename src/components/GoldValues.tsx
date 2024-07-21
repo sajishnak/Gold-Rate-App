@@ -92,13 +92,14 @@ const GoldValues = (props: GoldValuesProp) => {
       )}`;
       AsyncStorage.setItem("goldBalance", goldBalance);
       setIsSelling(true);
+      const sellingPrice: number =
+        sellingData && sellingData.current_price / 1000;
+      const rate = (parseFloat(gold) * sellingPrice).toFixed(2);
       navigation.navigate("TransactionSuccessScreen", {
-        value: amount,
+        value: rate,
         weight: gold,
-        isBuy: true,
+        isBuy: false,
       });
-      // setIsSellingSuccess(true);
-      // setErrMsg("Transaction successfully completed");
     } else if (parseFloat(gold) <= 0 || gold === "") {
       setErrMsg("Please enter a valid amount");
       setIsValidErr(true);
